@@ -17,15 +17,15 @@ export const fetchAllReservations = () => async (dispatch: any) => {
         const data = await reservationApi.getAllReservations();
         dispatch({ type: GET_RESERVATIONS, payload: data as ReservationInterface[] });
     } catch (error) {
-
+        dispatch({ type: GET_RESERVATIONS, payload: [] });
     }
 };
 
-export const deleteReservation = (reservationId: string, history: any) => async (dispatch: any) => {
+export const deleteReservation = (reservationId: string) => async (dispatch: any) => {
     try {
         dispatch({ type: START_LOADING })
         await reservationApi.deleteReservationById(reservationId);
-        //history.push('/')
+
         dispatch({ type: DELETE_RESERVATION, payload: { reservationId } });
     } catch (error) {
 

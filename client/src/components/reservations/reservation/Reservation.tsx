@@ -26,7 +26,7 @@ export const Reservation: React.FC<ReservationProps> = (props: ReservationProps)
         setOpenDeleteDialog(false);
     };
     const handleConfirmDelete = () => {
-        dispatch(deleteReservation(reservation._id, history))
+        dispatch(deleteReservation(reservation._id))
         handleClose()
     }
     return (

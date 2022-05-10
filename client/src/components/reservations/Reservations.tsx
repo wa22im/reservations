@@ -19,7 +19,7 @@ export const Reservations: React.FC = () => {
                 :
                 <>
                     <Container  >
-                        {reservations.reservationsArray.length === 0 ?
+                        {!reservations.reservationsArray || reservations.reservationsArray.length === 0 ?
                             <Typography variant='h6'  > there is no reservations</Typography>
                             : reservations.reservationsArray.map((reservation: ReservationInterface, index: number) => (
                                 <Reservation reservation={reservation} />

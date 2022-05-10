@@ -11,21 +11,21 @@ const styles = {
         justifyContent: 'flex-start',
         margin: '10px',
 
-    } as React.CSSProperties,
-    fileInput: {
-        width: '97%',
-        margin: '10px 0',
-    } as React.CSSProperties,
+    } as React.CSSProperties
 
 }
 const storeNames: string[] = ['FUTURE', 'Fashion 101', 'Galaxy']
+const statusName: string[] = ['Todo', "In progress", 'Ready']
 const Form: React.FC = () => {
     const history = useHistory()
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false)
     const [reservationName, setReservationName] = useState('');
+    const [reservationNameError, setReservationNameError] = useState(false)
     const [store, setStore] = useState('FUTURE');
     const [status, setStatus] = useState<'Todo' | 'In progress' | 'Ready' | ''>('');
+    const [statusError, setStatusError] = useState(false)
+
     const handleStatusChange = (event: any) => {
         setStatus(event.target.value);
 
@@ -35,10 +35,13 @@ const Form: React.FC = () => {
         event.preventDefault()
         if (status === '') {
             setIsLoading(false)
+            setStatusError(true)
             return
         }
         if (reservationName === '') {
             setIsLoading(false)
+            setReservationNameError(true)
+
             return
         }
         dispatch(createReservation({ name: reservationName, status, store }))
@@ -55,33 +58,40 @@ const Form: React.FC = () => {
 
                 <FormControl fullWidth>
                     <Typography variant="subtitle1">Reservation name</Typography>
-                    <TextField name="reservationName" variant="outlined" label="Reservation name" fullWidth value={reservationName} onChange={(e) => setReservationName(e.target.value)} />
+                    <TextField error={reservationNameError} helperText={reservationNameError ? "this field is required" : ""} name="reservationName" required variant="outlined" fullWidth value={reservationName} onChange={(e) => setReservationName(e.target.value)} />
                 </FormControl>
                 <FormControl fullWidth>
                     <Typography variant="subtitle1">Store</Typography>
-                    <Select
+                    <TextField
+
+                        select
+                        required
                         id="demo-simple-select"
                         value={store}
-                        label="Store"
+
                         onChange={handleStoreNameChange}
                     >{storeNames.map((storeName, index) => (
                         <MenuItem key={index} value={storeName}>{storeName}</MenuItem>
 
                     ))}
 
-                    </Select>
+                    </TextField>
                 </FormControl>
                 <FormControl>
                     <Typography variant="subtitle1">Status</Typography>
                     <RadioGroup
+
                         value={status}
                         onChange={handleStatusChange}
                     >
-                        <FormControlLabel value="Todo" control={<Radio />} label="Todo" />
-                        <FormControlLabel value="In progress" control={<Radio />} label="In progress" />
-                        <FormControlLabel value="Ready" control={<Radio />} label="Ready" />
+
+                        {statusName.map((status, index) => (<FormControlLabel key={index} value={status} control={<Radio />} label={status} />
+                        ))}
+
 
                     </RadioGroup>
+                    {statusError && <Typography color='red' variant="subtitle2">This field is required</Typography>}
+
                 </FormControl>
                 <Grid container
                     direction="row"
