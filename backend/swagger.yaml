@@ -1,0 +1,82 @@
+tags:
+- name: Reservations
+  description: Reservations API
+
+paths:
+  # [GET] reservations
+  /reservations:
+    get:
+      tags:
+      - reservations
+      summary: Find All reservations
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+  # [POST] reservations
+    post:
+      tags:
+      - reservations
+      summary: Add new reservation
+      parameters:
+      - name: body
+        in: body
+        description: user Data
+        required: true
+        schema:
+          $ref: '#/definitions/reservations' 
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+  # [DELETE] reservations/id
+  /reservations/{id}:
+    delete:
+      tags:
+      - reservations
+      summary: Delete Reservation By Id
+      parameters:
+      - name: id
+        in: path
+        description: reservation Id
+        required: true
+      responses:
+        200:
+          description: 'OK'
+        400:
+          description: 'Not found'
+        500:
+          description: 'Server Error'
+
+# definitions
+definitions:
+  reservations:
+    type: object
+    required:
+        - name
+        - store
+        - status
+    properties:
+      name:
+        type: string
+        description: name of reservation
+      store:
+        type: string
+        description: store of reservation
+      status:
+        type: string
+        enum:
+        - Todo
+        - In progress
+        - Ready
+        description: status of reservation
+
+schemes:
+ - https
+ - http
